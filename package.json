@@ -18,6 +18,7 @@
     "test:module5": "./node_modules/.bin/cross-env CI=true react-scripts test --env=jsdom --noStackTrace module5 || true",
     "test:module6": "./node_modules/.bin/cross-env CI=true react-scripts test --env=jsdom --noStackTrace module6 || true",
     "test:module7": "./node_modules/.bin/cross-env CI=true react-scripts test --env=jsdom --noStackTrace module7 || true",
+    "test:bonus": "./node_modules/.bin/cross-env CI=true react-scripts test --env=jsdom --noStackTrace bonus || true",
     "eject": "react-scripts eject"
   },
   "jest": {
