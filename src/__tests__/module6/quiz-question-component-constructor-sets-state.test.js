@@ -31,11 +31,14 @@ describe('QuizQuestion Component', () => {
       assert(false, "We weren't able to mount the QuizQuestion component.")
     }
 
-    let expectedState = {
-      incorrectAnswer: false
-    }
-
     assert(quizQuestion.state() != null, "We don't see that you're setting the state in the QuizQuestion component constructor.")
-    assert(JSON.stringify(quizQuestion.state()) == JSON.stringify(expectedState), "We can see that you're setting the state in the QuizQuestion component constructor, but it's not setting the key `incorrectAnswer` to the value `false`.")
+
+    let expectedState = {
+      isAnswerCorrect: false,
+      selectedIndex: null
+    }
+    const state = quizQuestion.state()
+    const hasCorrectState = state.isAnswerCorrect === expectedState.isAnswerCorrect && state.selectedIndex === expectedState.selectedIndex
+    assert(hasCorrectState, "We can see that you're setting the state in the QuizQuestion component constructor, but it's not setting the proper fields.")
   })
 })

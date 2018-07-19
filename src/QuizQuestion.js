@@ -6,19 +6,32 @@ class QuizQuestion extends Component {
         super(props);
 
         this.state = {
-            incorrectAnswer: false
+            isAnswerCorrect: false,
+            selectedIndex: null
         }
     }
-    handleClick(buttonText) {
+
+    handleClick(buttonText, index) {
         if(buttonText === this.props.quiz_question.answer) {
             this.setState({
-                incorrectAnswer: false
+                isAnswerCorrect: true,
+                selectedIndex: index
             });
-            this.props.showNextQuestionHandler();
         } else {
             this.setState({
-                incorrectAnswer: true
+                isAnswerCorrect: false,
+                selectedIndex: index
             });
+        }
+    }
+
+    handleContinueClick() {
+        if(this.state.isAnswerCorrect) {
+            this.setState({
+                isAnswerCorrect: false,
+                selectedIndex: null
+            });
+            this.props.showNextQuestionHandler()
         }
     }
 
@@ -31,16 +44,26 @@ class QuizQuestion extends Component {
                 <section>
                     <ul>
                         {
-                            this.props.quiz_question.answer_options.map((answer_option, index) => 
-                                <QuizQuestionButton
-                                    key={ index }
-                                    button_text={ answer_option }
-                                    clickHandler={ this.handleClick.bind(this) } />
-                            )
+                            this.props.quiz_question.answer_options.map((answer_option, index) => {
+                                const buttonClass = 
+                                this.state.selectedIndex === index ? 
+                                    (this.state.isAnswerCorrect ?
+                                        'correct' :
+                                        'incorrect') :
+                                    '';
+
+                                return <QuizQuestionButton
+                                            id={ index }
+                                            key={ index }
+                                            button_text={ answer_option }
+                                            clickHandler={ this.handleClick.bind(this) }
+                                            className={ buttonClass } />
+                            })
                         }
                     </ul>
                 </section>
-                { this.state.incorrectAnswer ? <p className='error'>Sorry, that's not right</p> : null }
+                { (!this.state.isAnswerCorrect && this.state.selectedIndex != null) && <p className='error'>Sorry, that's not right</p> }
+                <button disabled={ !this.state.isAnswerCorrect } onClick={ this.handleContinueClick.bind(this) }>Continue</button>
             </main>
         );
     }

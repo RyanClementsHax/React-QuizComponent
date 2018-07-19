@@ -58,11 +58,18 @@ describe('QuizQuestion Component', () => {
     } else if (quizQuestion.find('QuizQuestionButton').length > 1) {
       // this will run after @quiz-question-component-maps-multiple-button-components
       quizQuestion.find('QuizQuestionButton').forEach((n, index) => {
-        let expectedProps = {
-          button_text: quizData.quiz_questions[0].answer_options[index]
-        }
         assert(n.key() == index, "It doesn't look like the QuizQuestionButton component's `key` props have the correct values.")
-        assert(JSON.stringify(n.props()) == JSON.stringify(expectedProps), "It doesn't look like the QuizQuestionButton component's `button_text` props have the correct values.")
+
+        let expectedProps = {
+          id: index,
+          button_text: quizData.quiz_questions[0].answer_options[index],
+          className: ''
+        }
+        const resultProps = n.props()
+        const propsMatch = resultProps.id === expectedProps.id
+          && resultProps.button_text === expectedProps.button_text
+          && resultProps.className === expectedProps.className
+        assert(propsMatch, "It doesn't look like the QuizQuestionButton component's `button_text` props have the correct values.")
       })
     } else {
       assert(false, "Your QuizQuestion component isn't rendering any QuizQuestionButton components.")

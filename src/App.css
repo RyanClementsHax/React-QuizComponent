@@ -30,6 +30,12 @@ button {
   font-size: 1.5em;
   display: block;
 }
+button.incorrect {
+  background: red;
+}
+button.correct {
+  background: green;
+}
 .error {
   color: red;
 }

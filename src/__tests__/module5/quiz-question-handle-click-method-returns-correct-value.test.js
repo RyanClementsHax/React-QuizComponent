@@ -33,7 +33,7 @@ try {
 }
 
 describe('QuizQuestion Component', () => {
-  it('handleClick method has conditional that checks argument and called clickHandler @quiz-question-handle-click-method-returns-correct-value', () => {
+  it('handleClick method has conditional that checks argument and set appropriate state @quiz-question-handle-click-method-returns-correct-value', () => {
     assert(quizComponentExists, "The Quiz component hasn't been created yet.")
     assert(quizQuestionComponentExists, "The QuizQuestion component hasn't been created yet.")
     assert(quizQuestionButtonComponentExists, "The QuizQuestionButton component hasn't been created yet.")
@@ -61,10 +61,12 @@ describe('QuizQuestion Component', () => {
 
     let mockedPropHandler = sinon.spy()
 
+    let correctAnswerIndex = 0
+    let answers = ["5", "6", "7", "8"]
     let mock_prop = {
       instruction_text: "How many continents are there on Planet Earth?",
-      answer_options: ["5", "6", "7", "8"],
-      answer: "5"
+      answer_options: answers,
+      answer: answers[correctAnswerIndex]
     }
 
     let quizQuestion
@@ -74,12 +76,15 @@ describe('QuizQuestion Component', () => {
       assert(false, "We weren't able to mount the QuizQuestion component.")
     }
 
-    quizQuestion.instance().handleClick('3')
+    quizQuestion.instance().handleClick('3', 1)
     assert(spy2.called == false, "It doesn't appear that the conditional logic checking if the `buttonText` is equal to `this.props.quiz_question.answer` in the QuizQuestion's `handleClick` method.")
     try {
-      quizQuestion.instance().handleClick('5')
+      quizQuestion.instance().handleClick('5', correctAnswerIndex)
     } catch (e) {
     }
-    assert(spy2.called == true, "`this.props.showNextQuestionHandler()` is not being called when the `buttonText` is equal to `this.props.quiz_question.answer` in QuizQuestion's `handleClick` method.")
+    assert(spy2.called == false, "`this.props.showNextQuestionHandler()` is being called when the `buttonText` is equal to `this.props.quiz_question.answer` in QuizQuestion's `handleClick` method.")
+
+    let state = quizQuestion.state()
+    assert(state.isAnswerCorrect === true && state.selectedIndex === correctAnswerIndex, "It does not set the state properly on click")
   })
 })
